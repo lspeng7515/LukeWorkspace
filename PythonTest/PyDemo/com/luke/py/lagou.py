@@ -1,7 +1,11 @@
 import requests
 import time
 import json
+import sys
 from urllib.parse import quote
+from PythonTest.PyDemo.com.luke.py.db.MyDB import MyDB
+
+db=MyDB('localhost','root','123123','pydata')
 
 
 def get_page(url_start, url_parse, params, job):
@@ -52,7 +56,25 @@ def get_info(url_start, url_parse, page_number, job):
     time.sleep(5)
     text=json.loads(response.text)
     info=text['content']['positionResult']['result']
+    companyId=''
+    companyFullName=''
+    city=''
+    salary=''
+    companySize=''
+    skillLables=''
+    createTime=''
+    district=''
+    education=''
+    stationname=''
+
     for i in info:
+        companyId=i['companyId']
+        companyFullName=i['companyFullName']
+        city=i['city']
+        salary=i['salary']
+        companySize=i['companySize']
+        db.insertOrUpdateInfo('insert into lagou (companyId,companyFullName,city,salary,companySize,skillLables,createTime,district,education,stationname) values '
+                              '(i[\'companyId\'],i[\'companyFullName\'],i[\'city\'],i[\'salary\'],i[\'companySize\'],i[\'skillLables\'],i[\'createTime\'],i[\'district\'],i[\'education\'],i[\'stationname\']);')
         # 获取公司id
         print('公司id', i['companyId'])
         # 获取公司全名
